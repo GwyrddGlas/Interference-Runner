@@ -9,9 +9,9 @@ local InGame = {
     topCollision = nil,
     characterX = 100, 
     characterY = 0,
-    jumpHeight = -1700,
-    gravity = 140,
-    moveSpeed = -300,  -- Speed at which the world moves towards the player
+    jumpHeight = -1900,
+    gravity = 190,
+    moveSpeed = -410,  -- Speed at which the world moves towards the player
     floorSections = {}
 }
 
@@ -111,6 +111,8 @@ function InGame:update(dt)
 
     enemies.handleCollisions(self.characterCollider)
     powerups.handleCollisions(self.characterCollider)
+
+    self.characterCollider:setX(self.characterX)
 
     enemies.update(dt, self.moveSpeed)
     powerups.update(dt, self.moveSpeed)

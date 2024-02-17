@@ -12,6 +12,7 @@ function powerups.create(x, y)
     local powerUp = world:newRectangleCollider(x, y, 50, 50)
     powerUp:setType('static')
     powerUp:setCollisionClass("Powerup")
+    --powerUp:setSensor(true)
     powerUp.isPowerUp = true
     powerupsList[#powerupsList+1] = powerUp
     return powerUp
@@ -23,7 +24,6 @@ function powerups.update(dt, moveSpeed)
             local x, y = collider:getPosition()
             collider:setPosition(x + moveSpeed * dt, y)
 
-            -- Optionally, remove the powerup if it's off-screen
             if x < -100 then
                 collider:destroy()
                 table.remove(powerupsList, i)

@@ -27,14 +27,10 @@ local function newSlider(title, min, max, value, fn)
     }
 end
 
-local gameSettings = {
-
-}
-
 local backgroundMusic = love.audio.newSource("music/Retrowave-Music.ogg", "stream")
-backgroundMusic:setVolume(0.5)  -- Set initial volume to 50%
-backgroundMusic:setLooping(true)  -- Enable looping
-backgroundMusic:play()  -- Start playing the music
+backgroundMusic:setVolume(0.3)
+backgroundMusic:setLooping(true)
+backgroundMusic:play() 
 
 
 local function addMenuButtons()
@@ -42,12 +38,9 @@ local function addMenuButtons()
     sliders = {}
 
     table.insert(sliders, newSlider("Music Volume", 0, 1, 0.5, function(value)
-        -- Code to adjust music volume, e.g., love.audio.setVolume(value)
-        backgroundMusic:setVolume(value) -- Adjust volume based on slider
-        print("Music Volume: " .. value * 100)
+        backgroundMusic:setVolume(value) 
     end))
 
-   --
    --table.insert(buttons, newButton("Some Button", function(value)
    --    -- Code to adjust music volume, e.g., love.audio.setVolume(value)
    --    gameSettings.musc = value*100
@@ -89,8 +82,8 @@ function settings:update(dt)
     local mx, my = love.mouse.getPosition()
     local buttonWidth = 200
     local buttonHeight = 50
-    local sliderWidth = 200 -- Matches the width in the drawSlider function
-    local sliderHeight = 20 -- Matches the height in the drawSlider function
+    local sliderWidth = 200 
+    local sliderHeight = 20
     local margin = 16
     local cursorY = love.graphics.getHeight() / 2 - ((buttonHeight + margin) * #buttons + (sliderHeight + margin) * #sliders) / 2
 
@@ -100,8 +93,7 @@ function settings:update(dt)
 
         local sliderButtonX = bx + (sliderWidth - sliderHeight) * ((s.value - s.min) / (s.max - s.min))
 
-        -- Increase detection area for the slider button
-        local detectionPadding = 10 -- You can adjust this value to increase or decrease the detection area
+        local detectionPadding = 10 
         local buttonHalfWidth = sliderHeight / 2 + detectionPadding
         local buttonHalfHeight = sliderHeight / 2 + detectionPadding
 
@@ -118,7 +110,7 @@ function settings:update(dt)
 
         if s.dragging.active then
             s.value = math.clamp(s.min, s.max, (mx - bx - s.dragging.diffX - sliderHeight / 2) / (sliderWidth - sliderHeight))
-            if s.fn then s.fn(s.value) end -- Update the value using the callback function
+            if s.fn then s.fn(s.value) end
         end
     end
 end
@@ -130,8 +122,8 @@ end
 function settings:draw()
     local buttonWidth = 200
     local buttonHeight = 50
-    local sliderWidth = 200  -- Define a consistent width for all sliders
-    local sliderHeight = 20  -- Define a consistent height for all sliders
+    local sliderWidth = 200 
+    local sliderHeight = 20
     local margin = 16
     local totalHeight = (buttonHeight + margin) * #buttons - margin
     local cursorY = love.graphics.getHeight() / 2 - totalHeight / 2
@@ -148,8 +140,6 @@ function settings:draw()
         -- Draw the slider below the title
         by = by + font:getHeight() + margin / 2
         drawSlider(s, bx, by, sliderWidth, sliderHeight)
-        
-        love.graphics.setColor(1, 1, 1)  -- Reset color to white after drawing text
     end
 
     love.graphics.setFont(font)
