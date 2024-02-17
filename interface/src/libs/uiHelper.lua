@@ -34,13 +34,13 @@ function UIHelper:draw()
     local heartWidth, heartHeight = self.heartSprite:getDimensions()
 
     love.graphics.setColor(1, 1, 1) 
-    love.graphics.draw(self.coinSprite, 10, 10, 0, scale, scale)  
-    love.graphics.print("x " .. tostring(self.coinsCollected), 10 + heartWidth * scale + 5, 20) 
+    love.graphics.draw(self.coinSprite, 10, 40, 0, scale*1.5, scale*1.5)  
+    love.graphics.print("x " .. tostring(self.coinsCollected), 10 + heartWidth * scale + 40, 70) 
 
     -- Draw hearts
     for i = 1, self.hearts do
-        local heartX = screenWidth - (heartWidth * scale + 5) * i  
-        love.graphics.draw(self.heartSprite, heartX, 10, 0, scale, scale)  
+        local heartX = screenWidth - (heartWidth * scale + 40) * i  
+        love.graphics.draw(self.heartSprite, heartX, 40, 0, scale*2, scale*2)  
     end
 end
 

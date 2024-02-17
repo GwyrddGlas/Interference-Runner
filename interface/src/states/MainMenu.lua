@@ -45,6 +45,7 @@ function MainMenu:enter()
     MainMenu.delay = MainMenu.delayAfterEnter
     local myFont = love.graphics.newFont(25)
     love.graphics.setFont(myFont)
+    self.backgroundImage = love.graphics.newImage("sprites/backgroundMain.png")
 
     print("Entered Main Menu")
     addMenuButtons()
@@ -82,49 +83,42 @@ local function drawRoundedRectWithOutline(x, y, width, height, borderRadius, fil
 end
 
 function MainMenu:draw()
-    local baseWidth = 250 
-    local baseHeight = 50 
-    local margin = 15 
-    local borderRadius = 10 
-    local outerPadding = 20 
-    local gapBetweenLogoAndButtons = 50 
+    local screenWidth = love.graphics.getWidth()
+    local screenHeight = love.graphics.getHeight()
+    local baseWidth = 250 * 1.5 
+    local baseHeight = 50 * 1.5
+    local margin = 15 * 1.5
+    local totalButtonHeight = (#buttons * baseHeight) + ((#buttons - 1) * margin)
+    local buttonStartY = (screenHeight - totalButtonHeight) / 2  -- Start in the middle of the screen
 
-    local totalButtonHeight = (#buttons * baseHeight * 1.2) + ((#buttons - 1) * margin)
+    -- Draw the background image
+    love.graphics.draw(self.backgroundImage, 0, 0, 0, screenWidth / self.backgroundImage:getWidth(), screenHeight / self.backgroundImage:getHeight())
 
-    local outerRectWidth = baseWidth * 1.2 + outerPadding * 2
-    local outerRectHeight = totalButtonHeight + outerPadding * 2
-    local outerRectX = love.graphics.getWidth() / 4 - outerRectWidth / 2
-    local outerRectY = love.graphics.getHeight() / 2 - outerRectHeight / 2 
-
-    -- Draw the outer rounded rectangle
-    local outerFillColor = {0.4, 0.2, 0.6} -- Purple fill color
-    local outerOutlineColor =  {0.8, 0.4, 1} -- Light purple outline color
-    drawRoundedRectWithOutline(outerRectX, outerRectY, outerRectWidth, outerRectHeight, borderRadius, outerFillColor, outerOutlineColor, 4)
-
-    -- Draw buttons inside the outer rounded rectangle
     for i, button in ipairs(buttons) do
-        button.x = outerRectX + outerPadding
-        button.y = outerRectY + outerPadding + (baseHeight * 1.2 + margin) * (i - 1)
-
-        button.width = baseWidth * 1.2
-        button.height = baseHeight * 1.2
-
-        local fillColor = {0.7, 0.1, 0.5} -- Pink fill color
-        local outlineColor = {0.6, 0.4, 1} -- Light pink outline color
-
-        drawRoundedRectWithOutline(button.x, button.y, button.width, button.height, borderRadius, fillColor, outlineColor, 4)
+        -- Center the button horizontally
+        button.x = (screenWidth - baseWidth) / 2
+        -- Position the button vertically
+        button.y = buttonStartY + ((baseHeight + margin) * (i - 1))
         
-        local textW = love.graphics.getFont():getWidth(button.text)
-        local textH = love.graphics.getFont():getHeight(button.text)
+        button.width = baseWidth
+        button.height = baseHeight
+
+        local fillColor = {0.012, 0.224, 0.502} -- fill color
+        local outlineColor = {1, 1, 1} -- outline color
+
+        -- Draw the filled rectangle for the button background
+        drawRoundedRectWithOutline(button.x, button.y, button.width, button.height, 10, fillColor, outlineColor, 2)
         
         if button.now then
-            drawRoundedRectWithOutline(button.x, button.y, button.width, button.height, borderRadius, {0.8, 0.8, 1}, {0.8, 0.8, 1}, 4) -- Light blue fill color for hover effect
+            drawRoundedRectWithOutline(button.x, button.y, button.width, button.height, 10, {0.992, 0.455, 0.745}, {1, 1, 1}, 2) -- Light blue color for hover effect
         end
 
+        -- Draw the button text
+        local textW = love.graphics.getFont():getWidth(button.text)
+        local textH = love.graphics.getFont():getHeight(button.text)
         love.graphics.setColor(1, 1, 1, 1) -- White text color
-        love.graphics.print(button.text, button.x + (button.width / 2) - (textW / 2), button.y + (button.height / 2) - (textH / 2))
+        love.graphics.print(button.text, button.x + (baseWidth / 2) - (textW / 2), button.y + (baseHeight / 2) - (textH / 2))
     end
 end
-
 
 return MainMenu

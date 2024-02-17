@@ -25,7 +25,7 @@ function InGame:enter()
     local rectHeight = screenHeight / 4
 
     floorX = 0
-    floorY = screenHeight - rectHeight + 30
+    floorY = screenHeight - rectHeight + 70
 
     -- Create the initial floor section
     self:generateFloorSection(floorX, floorY, love.graphics.getWidth(), 10)  -- Initial floor covering the screen width with visible height
@@ -37,19 +37,19 @@ function InGame:enter()
     self.world:addCollisionClass('Powerup')
 
     self.characterCollider = self.world:newRectangleCollider(self.characterX, self.characterY, 50, 100)  -- Adjusted collider size to match character size
-    self.characterCollider:setRestitution(0)  -- Prevent bouncing
+    self.characterCollider:setRestitution(0)
     self.characterCollider:setType('dynamic')
-    self.characterCollider:setFixedRotation(true)  -- Prevent the character from rotating
+    self.characterCollider:setFixedRotation(true)  
     self.characterCollider:setCollisionClass('Player')
 
     enemies.init(self.world)
     powerups.init(self.world)
 
-    self.speedIncreaseRate = 10    -- How much to increase the speed by
-    self.speedIncreaseInterval = 5 -- How often to increase the speed (seconds)
+    self.speedIncreaseRate = 15    -- How much to increase the speed by
+    self.speedIncreaseInterval = 3 -- How often to increase the speed (seconds)
     self.timeSinceLastIncrease = 0
 
-    self.backgroundImage = love.graphics.newImage('sprites/background.png')  -- Replace with the actual path to your image
+    self.backgroundImage = love.graphics.newImage('sprites/background.png')
 end
 
 function InGame:handleEnemyCollision(enemyCollider)
@@ -102,11 +102,9 @@ function InGame:update(dt)
 
     self.timeSinceLastIncrease = self.timeSinceLastIncrease + dt
     
-    -- Check if it's time to increase the speed
     if self.timeSinceLastIncrease >= self.speedIncreaseInterval then
-        self.moveSpeed = self.moveSpeed - self.speedIncreaseRate -- Negative because speed is a negative value
-        self.timeSinceLastIncrease = 0 -- Reset the timer
-        print("Speed increased to: " .. self.moveSpeed) -- For debugging
+        self.moveSpeed = self.moveSpeed - self.speedIncreaseRate 
+        self.timeSinceLastIncrease = 0 
     end
 
     enemies.handleCollisions(self.characterCollider)
